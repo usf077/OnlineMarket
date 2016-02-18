@@ -5,7 +5,7 @@
  */
 package com.onlinemarket.util;
 
-import com.onlinemarket.authentification.beans.UsersBean;
+import com.onlinemarket.beans.UsersBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -90,7 +90,7 @@ public class AuthenticationPhaseListener implements PhaseListener {
     private boolean requestingSecureView(FacesContext context) {
         ExternalContext extContext = context.getExternalContext();       
         String path = extContext.getRequestPathInfo();
-        return (!"/users/login.xhtml".equals(path) && !"/users/create.xhtml".equals(path));              
+        return (!"/users/login.xhtml".equals(path) && !"/users/create.xhtml".equals(path) && !"/annonces/index.xhtml".equals(path)&&!"/annonces/detail.xhtml".equals(path));              
     }
 
 }

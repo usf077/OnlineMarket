@@ -9,20 +9,21 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,8 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author ADMINIBM
  */
 @Entity
-@Table(name = "produit", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_produit"})})
+@Table(name = "produit")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Produit.findAll", query = "SELECT p FROM Produit p"),
@@ -49,32 +49,32 @@ public class Produit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_produit", nullable = false)
+    @Column(name = "id_produit")
     private Integer idProduit;
     @Size(max = 254)
-    @Column(name = "nom_p", length = 254)
+    @Column(name = "nom_p")
     private String nomP;
     @Size(max = 254)
-    @Column(name = "categorie", length = 254)
+    @Column(name = "categorie")
     private String categorie;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "prix", precision = 17, scale = 17)
+    @Column(name = "prix")
     private Double prix;
     @Column(name = "date_mise_vente")
     @Temporal(TemporalType.DATE)
     private Date dateMiseVente;
     @Size(max = 254)
-    @Column(name = "description_p", length = 254)
+    @Column(name = "description_p")
     private String descriptionP;
     @Size(max = 254)
-    @Column(name = "image", length = 254)
+    @Column(name = "image")
     private String image;
-    @ManyToMany(mappedBy = "produitCollection")
-    private Collection<Pannier> pannierCollection;
-    @JoinColumn(name = "id_annonce", referencedColumnName = "id_annonce", nullable = false)
-    @ManyToOne(optional = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produit")
+    private Collection<CommandeProduit> commandeProduitCollection;
+    @JoinColumn(name = "id_annonce", referencedColumnName = "id_annonce" )
+    @ManyToOne(optional = false ,fetch = FetchType.EAGER)
     private Annonce idAnnonce;
-    @JoinColumn(name = "id_cat", referencedColumnName = "id_cat", nullable = false)
+    @JoinColumn(name = "id_cat", referencedColumnName = "id_cat")
     @ManyToOne(optional = false)
     private Categorie idCat;
 
@@ -142,12 +142,12 @@ public class Produit implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Pannier> getPannierCollection() {
-        return pannierCollection;
+    public Collection<CommandeProduit> getCommandeProduitCollection() {
+        return commandeProduitCollection;
     }
 
-    public void setPannierCollection(Collection<Pannier> pannierCollection) {
-        this.pannierCollection = pannierCollection;
+    public void setCommandeProduitCollection(Collection<CommandeProduit> commandeProduitCollection) {
+        this.commandeProduitCollection = commandeProduitCollection;
     }
 
     public Annonce getIdAnnonce() {

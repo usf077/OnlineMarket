@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
     /*
         Fullscreen background
     */
-    $.backstretch("/OnlineMarket-web/faces/javax.faces.resource/img/backgrounds/1.jpg" );
+    $.backstretch("/OnlineMarket-web/faces/javax.faces.resource/img/backgrounds/bg.jpg" );
     
     /*
         Form validation

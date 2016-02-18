@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="../templates/main.xhtml">
+    <ui:define name="content">   
+        <div style="right: 0%; display: inline-block" data-spy="affix">
+            <a  class="btn btn-danger" href="../annonces/basket.xhtml"  >
+                <div class="row">
+                    <div class="col-md-4">
+                        <span style="font-size: 40px;" class="glyphicon glyphicon-shopping-cart"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <h:outputText class=""  value="#{annonceBean.products.size()} Produit(s)" />
+                        <h:outputText  class="center-block"  value="#{annonceBean.montantAchete}0€" /> 
+                    </div>
+                </div>
+            </a> 
+        </div>
+        <div id="resulat" >
+            <h:outputText escape="false"  rendered="#{annonceBean.dtmdl.rowCount == 0}" >
+                <div class="panel panel-default ">
+                    <div class="panel-body">#{annonceBean.pagination.itemsCount} annoces trouvées</div>
+                </div>
+            </h:outputText>
+
+            <h:form>
+                <h:panelGroup rendered="#{annonceBean.dtmdl.rowCount > 0}">
+                    <div class="panel-group">
+                        <div class="panel panel-default ">
+                            <div class="panel-body">
+                                <h:outputText   value="#{annonceBean.pagination.pageFirstItem + 1}..#{annonceBean.pagination.pageLastItem + 1}/#{annonceBean.pagination.itemsCount} annoces trouvée(s)" />
+                            </div>
+                        </div>
+                        <h:dataTable value="#{annonceBean.dtmdl}" var="item" styleClass="table table1" headerClass="headers" rowClasses="oddRows,evenRows" border="1" cellspacing="0" cellpadding="5" frame="box">     
+                            <h:column>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        #{item.libelle}
+                                        <h:outputText   value="[#{item.lstProduit.size()} produit(s)]" rendered="#{item.lstProduit.size() >0 }" /> 
+                                        <h:outputText   value=" Totale : #{item.prix}0 €" class="pull-right" />   
+                                    </div>
+                                    <div class="panel-body"> 
+                                        <div class="col-md-2" >
+                                            <img src='#{item.lstProduit.size() >0 and  item.lstProduit.get(0).imgesUrl!=null  ?  ("../resources/products/thumbnail/".concat(item.lstProduit.get(0).imgesUrl)  ): "../resources/products/imageNotFound.jpg"}' height="150" width="150"/>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="row">
+                                                #{item.dateMiseEnVente}
+                                            </div>
+                                            <div class="row">
+                                                #{item.description} 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 center-block" >
+                                            <br />
+                                            <h:commandLink action="#{annonceBean.Detail(item.identifiant)}"  class="btn btn-danger"  > <span class="glyphicon glyphicon-eye-open"></span> Voir </h:commandLink> 
+                                        </div>
+                                    </div>
+                                </div> 
+                            </h:column>
+                        </h:dataTable>
+                        <div class="text-center ">
+                            <ul class="pagination">
+
+                                <li class="#{!annonceBean.pagination.hasPreviousPage ? 'disabled' : ''}  "><h:commandLink action="#{annonceBean.previous}"  class="glyphicon glyphicon-chevron-left" disabled="#{!annonceBean.pagination.hasPreviousPage}" /> &#xA0;</li>
+                                <c:forEach begin="1" end="#{annonceBean.pagination.itemsCount%annonceBean.pagination.pageSize==0 ? annonceBean.pagination.itemsCount/annonceBean.pagination.pageSize : (annonceBean.pagination.itemsCount/annonceBean.pagination.pageSize) +1 }"  var="a">
+                                    <li class="#{annonceBean.pagination.page==(a-1) ? 'active' : ''} " ><h:commandLink action="#{annonceBean.goToPage(a)}" class="glyphicon"  disabled="#{annonceBean.pagination.page==(a-1)}" value="#{a}" /> &#xA0;</li>
+                                </c:forEach>
+                                <li class="#{!annonceBean.pagination.hasNextPage ? 'disabled' : '' } ">  <h:commandLink action="#{annonceBean.next}"  class="glyphicon glyphicon-chevron-right" disabled="#{!annonceBean.pagination.hasNextPage}" /> &#xA0;  </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+
+            </h:form>
+
+        </div>
+    </ui:define>
+</ui:composition>        
+

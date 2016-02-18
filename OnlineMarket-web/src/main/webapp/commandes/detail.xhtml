@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="../templates/main.xhtml">
+    <ui:define name="content"> 
+        <div id="resulat" >
+
+            <h:form >
+                <h:panelGroup >
+
+                    <div class="panel-group">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading">
+                                <h:outputText   value="Commande de : #{CommandeBean.commande.dateCommande}, Nombre de produit : #{CommandeBean.commande.lstProduit.size() }" />  
+                                <h:outputText   value=" Totale : #{CommandeBean.commande.prix}0 €" class="pull-right" />    
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-10" >
+                                  Etat de la commande :   <h:outputText   value="#{CommandeBean.commande.etat}" />
+                                </div>
+                            </div>
+                        </div>
+                        <h:dataTable value="#{CommandeBean.commande.lstProduit}" var="item" styleClass="table table1" headerClass="headers" rowClasses="oddRows,evenRows" border="0" cellspacing="0" cellpadding="5" frame="box">     
+                            <h:column>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        #{item.nom} ( #{item.prix} € )    
+                                    </div>
+                                    <div class="panel-body"> 
+                                        <div class="col-md-2" >
+                                            <h:graphicImage value="#{ empty item.imgesUrl ? '../resources/products/imageNotFound.jpg' : '../resources/products/thumbnail/'.concat(item.imgesUrl) }" height="150" width="150"/>
+                                        </div>
+                                        <div class="col-md-8" >
+                                            <div class="row">
+                                                #{item.description} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </h:column>
+                        </h:dataTable>
+                    </div>
+                </h:panelGroup>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>        
+

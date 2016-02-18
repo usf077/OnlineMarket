@@ -16,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,8 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author ADMINIBM
  */
 @Entity
-@Table(name = "categorie", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_cat"})})
+@Table(name = "categorie")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categorie.findAll", query = "SELECT c FROM Categorie c"),
@@ -39,10 +37,10 @@ public class Categorie implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_cat", nullable = false)
+    @Column(name = "id_cat")
     private Integer idCat;
     @Size(max = 254)
-    @Column(name = "nom_c", length = 254)
+    @Column(name = "nom_c")
     private String nomC;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCat")
     private Collection<Produit> produitCollection;

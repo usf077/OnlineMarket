@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="../templates/main.xhtml">
+    <ui:define name="content">  
+        <f:view>
+            <div id="resulat" >
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ajouter des Produits à votre annonce</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row bs-wizard text-center" style="border-bottom:0;">
+
+                            <div class="col-xs-3  bs-wizard-step center-block complete">
+                                <div class="text-center bs-wizard-stepnum">Ajouter une Annonce</div>
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                                <div class="bs-wizard-info text-center">Specifier le nom et la description de votre Annonce</div>
+                            </div>
+
+                            <div class="col-xs-3 bs-wizard-step active"><!-- complete -->
+                                <div class="text-center bs-wizard-stepnum">Ajouter des produit</div>
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                                <div class="bs-wizard-info text-center">Ajouter autant de produit que vous  voullez, et spécifier leurs prix. </div>
+                            </div>
+
+                            <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                                <div class="text-center bs-wizard-stepnum">Publier votre</div>
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                                <div class="bs-wizard-info text-center">Votre annonce sera publier après la validation de nos administrateurs</div>
+                            </div>             
+                        </div>
+
+                        <h:form enctype="multipart/form-data" >
+                            <h:panelGroup rendered="#{annonceBean.dtmdlp.rowCount>0}">
+                                <div class="panel-group">
+                                    <div class="panel panel-default ">
+                                        <div class="panel-body">
+                                            <h:outputText   value="#{annonceBean.dtmdlp.rowCount} produit(s) ajouté(s)" />
+                                        </div>
+                                    </div>
+                                    <h:dataTable value="#{annonceBean.dtmdlp}" var="item" styleClass="table table1" headerClass="headers" rowClasses="oddRows,evenRows" border="0" cellspacing="0" cellpadding="5" frame="box">     
+                                        <h:column>
+                                            <h:panelGroup rendered="#{item.isEditable}" >
+
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-heading">
+                                                        <h:commandLink  immediate="true" class="close" action="#{annonceBean.RemoveProduct(dtmdlp.getRowIndex())}"> &#215; </h:commandLink>
+                                                        <h3 class="panel-title">Produit</h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="form-bottom">
+                                                            <div class="form-group">
+                                                                <label class="sr-only" for="form-libelle">Libellé</label>
+                                                                <h:inputText id="form-libelle"   requiredMessage="*" title="Libelle" a:placeholder="Libelle" label="Libelle" value="#{item.nom}" class="form-nom form-control" required="true" />
+                                                                <h:message for="form-libelle" style="color: red"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="sr-only" for="form-description">Description</label>
+                                                                <h:inputTextarea id="form-description" title="description" label="Description" class="form-description form-control" a:placeholder="Description" requiredMessage="*" value="#{item.description}" required="true" />
+                                                                <h:message for="form-description" style="color: red" />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="sr-only" for="form-prix">Prix</label>
+                                                                <h:inputText id="form-prix" title="prix" label="Prix" class="form-prix form-control" a:placeholder="prix" requiredMessage="*"  value="#{item.prix}" required="true" />
+                                                                <h:message for="form-description" style="color: red" />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="sr-only" for="form-categorie">Categorie</label>
+                                                                <h:selectOneMenu id="form-categorie" title="categorie" label="Categorie" class="form-categorie form-control" a:placeholder="Categorie" requiredMessage="*"  value="#{item.idCategorie}"  required="true" >
+                                                                    <f:selectItems value="#{annonceBean.categories}" var="a" itemLabel="#{a.libelle}" itemValue="#{a.identifiant}" />
+                                                                </h:selectOneMenu>
+                                                                <h:message for="form-categorie" style="color: red" />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="sr-only" for="form-prix">Image</label>
+                                                                <h:inputFile id="form-image"   title="image" label="image" class="form-image form-control" a:placeholder="Image" requiredMessage="*" validator="#{annonceBean.validateFile}" value="#{annonceBean.file}" required="true" />
+                                                                <span>
+                                                                    #{item.imgesUrl}
+                                                                </span>
+                                                                <h:message for="form-description" style="color: red" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{item.isEditable eq false}">
+                                                <h:form>
+                                                    <div class="panel panel-default" >
+                                                        <div class="panel-heading">
+                                                            #{item.nom} ( #{item.prix} € ) 
+                                                            <h:commandLink  immediate="true" class="close" action="#{annonceBean.RemoveProduct(dtmdlp.getRowIndex())}"> &#215; </h:commandLink>
+                                                        </div>
+                                                        <div class="panel-body"> 
+                                                            <div class="col-md-2" >
+                                                                <h:graphicImage value="#{ empty item.imgesUrl ? '../resources/products/imageNotFound.jpg' : '../resources/products/thumbnail/'.concat(item.imgesUrl) }" height="150" width="150"/>
+                                                            </div>
+                                                            <div class="col-md-8" >
+                                                                <div class="row">
+                                                                    #{item.description} 
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 center-block" >
+                                                                <br />
+                                                               <!-- <h:commandLink action="#{annonceBean.Detail(item.identifiant)}"  class="btn btn-danger"  > <span class="glyphicon glyphicon-edit"></span> Editer </h:commandLink>--> 
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </h:form>
+                                            </h:panelGroup>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
+                            </h:panelGroup>
+                            <div class="btn-group btn-group-justified">
+                                <div class="btn-group">
+                                    <h:commandLink id="AddProduct"   type="submit" class="btn btn-info" action="#{annonceBean.AddProduct}" >
+                                        <span class="glyphicon glyphicon-plus-sign"></span> &#xA0; &#xA0;Ajouter Produit
+                                    </h:commandLink>
+                                </div>
+                                <div class="btn-group">
+                                    <h:commandLink id="submit" disabled="#{annonceBean.dtmdlp.rowCount eq 0}" type="submit" class="btn btn-danger #{annonceBean.dtmdlp.rowCount eq 0 ? 'disabled' :'' }" action="#{annonceBean.FinalizeAnnonce}" >
+                                        Continuer et publier &#xA0; &#xA0; <span class="glyphicon glyphicon-arrow-right"></span> 
+                                    </h:commandLink>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </f:view>
+    </ui:define>
+</ui:composition>        
+

@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="../templates/main.xhtml">
+    <ui:define name="content">  
+        <f:view>
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{annonceBean.onCreateLoad}"/>
+            </f:metadata>
+            <div id="resulat" >
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Déposer une annoce</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row bs-wizard text-center" style="border-bottom:0;">
+
+                            <div class="col-xs-3  bs-wizard-step center-block complete">
+                                <div class="text-center bs-wizard-stepnum">Céer une Annonce</div>
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                                <div class="bs-wizard-info text-center">Specifier le nom et la description de votre Annonce</div>
+                            </div>
+
+                            <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                                <div class="text-center bs-wizard-stepnum">Ajouter des produit</div>
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                                <div class="bs-wizard-info text-center">Ajouter autant de produit que vous  voullez, et spécifier leurs prix. </div>
+                            </div>
+
+                            <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                                <div class="text-center bs-wizard-stepnum">Publier votre</div>
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                                <div class="bs-wizard-info text-center">Votre annonce sera publier après la validation de nos administrateurs</div>
+                            </div>             
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Annonce</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="form-bottom">
+                                    <h:form id="annonce" class="annonce-form"> 
+                                        <div class="form-group">
+                                            <label class="sr-only" for="form-libelle">Libellé</label>
+                                            <h:inputText id="form-libelle"   requiredMessage="*" title="Libelle" a:placeholder="Libelle" label="Libelle" value="#{annonceBean.annonce.libelle}" class="form-Prenom form-control" required="true" />
+                                            <h:message for="form-libelle" style="color: red"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="form-description">Nom</label>
+                                            <h:inputTextarea id="form-description" title="description" label="Description" class="form-description form-control" a:placeholder="Description" requiredMessage="*" value="#{annonceBean.annonce.description}" required="true" />
+                                            <h:message for="form-nom" style="color: red" />
+                                        </div>
+
+                                        <div class="btn-group btn-group-justified">
+                                            <div class="btn-group">
+                                                <h:commandLink id="submit"   type="submit" class="btn btn-danger" action="#{annonceBean.CreateAnnonce}" >
+                                                    Continuer &#xA0; &#xA0;<span class="glyphicon glyphicon-arrow-right"> </span> 
+                                                </h:commandLink>
+                                            </div>
+
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </f:view>
+    </ui:define>
+</ui:composition>        
+

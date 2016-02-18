@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,33 +33,29 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author ADMINIBM
  */
 @Entity
-@Table(name = "commande", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_cmd"})})
+@Table(name = "commande")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Commande.findAll", query = "SELECT c FROM Commande c"),
     @NamedQuery(name = "Commande.findByIdCmd", query = "SELECT c FROM Commande c WHERE c.idCmd = :idCmd"),
     @NamedQuery(name = "Commande.findByDateCmd", query = "SELECT c FROM Commande c WHERE c.dateCmd = :dateCmd"),
-    @NamedQuery(name = "Commande.findByQteCmd", query = "SELECT c FROM Commande c WHERE c.qteCmd = :qteCmd"),
     @NamedQuery(name = "Commande.findByEtatCmd", query = "SELECT c FROM Commande c WHERE c.etatCmd = :etatCmd")})
 public class Commande implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_cmd", nullable = false)
+    @Column(name = "id_cmd")
     private Integer idCmd;
     @Column(name = "date_cmd")
     @Temporal(TemporalType.DATE)
     private Date dateCmd;
-    @Column(name = "qte_cmd")
-    private Integer qteCmd;
     @Size(max = 254)
-    @Column(name = "etat_cmd", length = 254)
+    @Column(name = "etat_cmd")
     private String etatCmd;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCmd")
-    private Collection<Pannier> pannierCollection;
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commande", fetch = FetchType.EAGER)
+    private Collection<CommandeProduit> commandeProduitCollection;
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     @ManyToOne(optional = false)
     private User idUser;
 
@@ -86,14 +82,6 @@ public class Commande implements Serializable {
         this.dateCmd = dateCmd;
     }
 
-    public Integer getQteCmd() {
-        return qteCmd;
-    }
-
-    public void setQteCmd(Integer qteCmd) {
-        this.qteCmd = qteCmd;
-    }
-
     public String getEtatCmd() {
         return etatCmd;
     }
@@ -103,12 +91,12 @@ public class Commande implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Pannier> getPannierCollection() {
-        return pannierCollection;
+    public Collection<CommandeProduit> getCommandeProduitCollection() {
+        return commandeProduitCollection;
     }
 
-    public void setPannierCollection(Collection<Pannier> pannierCollection) {
-        this.pannierCollection = pannierCollection;
+    public void setCommandeProduitCollection(Collection<CommandeProduit> commandeProduitCollection) {
+        this.commandeProduitCollection = commandeProduitCollection;
     }
 
     public User getIdUser() {

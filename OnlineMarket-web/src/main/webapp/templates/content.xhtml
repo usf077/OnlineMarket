@@ -1,14 +1,18 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
-                <ui:include src="leftMenu.xhtml" />
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    
+    <div class="col-sm-9 main col-md-offset-2 col-sm-offset-2 ">   
+
+        <h:messages style="color: red" showDetail="true" >
+            <div class="alert alert-danger fade" style="display: none;">
+                <a href="#" class="close" data-dismiss="alert">&#215;</a>
+                <strong>Error!</strong>
             </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">                    
-                <ui:insert name="content" />                    
-            </div>
-        </div>
+            </h:messages>
+            <ui:insert name="content" />      
     </div>
 </ui:composition>
 

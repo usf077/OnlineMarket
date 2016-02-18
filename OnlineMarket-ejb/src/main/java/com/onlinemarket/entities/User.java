@@ -18,7 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -28,8 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author ADMINIBM
  */
 @Entity
-@Table(name = "users", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_user"})})
+@Table(name = "users")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
@@ -44,22 +42,22 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_user", nullable = false)
+    @Column(name = "id_user")
     private Integer idUser;
     @Size(max = 254)
-    @Column(name = "nom", length = 254)
+    @Column(name = "nom")
     private String nom;
     @Size(max = 254)
-    @Column(name = "prenom", length = 254)
+    @Column(name = "prenom")
     private String prenom;
     @Size(max = 254)
-    @Column(name = "telephone", length = 254)
+    @Column(name = "telephone")
     private String telephone;
     @Size(max = 254)
-    @Column(name = "adresse", length = 254)
+    @Column(name = "adresse")
     private String adresse;
     @Size(max = 254)
-    @Column(name = "image_p", length = 254)
+    @Column(name = "image_p")
     private String imageP;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private Collection<Annonce> annonceCollection;

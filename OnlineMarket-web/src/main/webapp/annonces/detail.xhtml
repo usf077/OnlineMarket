@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="../templates/main.xhtml">
+    <ui:define name="content"> 
+            <div style="right: 0%; display: inline-block" data-spy="affix">
+                <a  class="btn btn-danger" href="../annonces/basket.xhtml"  >
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span style="font-size: 40px;" class="glyphicon glyphicon-shopping-cart"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <h:outputText class=""  value="#{annonceBean.products.size()} Produit(s)" />
+                                <h:outputText  class="center-block"  value="#{annonceBean.montantAchete}0€" /> 
+                            </div>
+                        </div>
+                </a> 
+            </div>
+        <div id="resulat" >
+
+            <h:form>
+                <h:panelGroup >
+
+                    <div class="panel-group">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading">
+                                <h:outputText   value="#{annonceBean.annonce.libelle}, Nombre de produit : #{annonceBean.annonce.lstProduit.size() }" />  
+                                <h:outputText   value=" Totale : #{annonceBean.annonce.prix}0 €" class="pull-right" />    
+                            </div>
+                            <div class="panel-body">
+                                <h:outputText   value="#{annonceBean.annonce.description}" />
+                            </div>
+                        </div>
+                        <h:dataTable value="#{annonceBean.annonce.lstProduit}" var="item" styleClass="table table1" headerClass="headers" rowClasses="oddRows,evenRows" border="0" cellspacing="0" cellpadding="5" frame="box">     
+                            <h:column>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        #{item.nom} ( #{item.prix} € )    
+                                    </div>
+                                    <div class="panel-body"> 
+                                        <div class="col-md-2" >
+                                            <h:graphicImage value="#{ empty item.imgesUrl ? '../resources/products/imageNotFound.jpg' : '../resources/products/thumbnail/'.concat(item.imgesUrl) }" height="150" width="150"/>
+                                        </div>
+                                        <div class="col-md-8" >
+                                            <div class="row">
+                                                #{item.description} 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 center-block" >
+                                            <br />
+                                            <h:commandLink action="#{annonceBean.addProductToCart(item.identifiant)}"  class="btn btn-danger #{annonceBean.products.containsKey(item.identifiant)? 'disabled':''}"  > <span class="glyphicon glyphicon-shopping-cart"></span> Ajouter au panier </h:commandLink> 
+                                        </div>
+                                    </div>
+                                </div> 
+                            </h:column>
+                        </h:dataTable>
+                    </div>
+                </h:panelGroup>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>        
+

@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+                xmlns:h="http://java.sun.com/jsf/html"  
+                xmlns:f="http://java.sun.com/jsf/core"  
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="../templates/main.xhtml" rendered="#{user.isAdmin}">
+    <ui:define name="content" rendered="#{user.isAdmin}"> 
+        <div id="resulat" >
+            <h:outputText escape="false"  rendered="#{AdinistrationBean.dtmdl.rowCount == 0}" >
+                <div class="panel panel-default ">
+                    <div class="panel-body">#{AdinistrationBean.pagination.itemsCount} annoces trouvées</div>
+                </div>
+            </h:outputText>
+
+            <h:form>
+                <h:panelGroup rendered="#{AdministrationBean.dtmdl.rowCount > 0}">
+                    <div class="panel-group">
+                        <div class="panel panel-default ">
+                            <div class="panel-body">
+                                <h:outputText   value="#{AdministrationBean.pagination.pageFirstItem + 1}..#{AdministrationBean.pagination.pageLastItem + 1}/#{AdministrationBean.pagination.itemsCount} annoces trouvée(s)" />
+                            </div>
+                        </div>
+                        <h:dataTable value="#{AdministrationBean.dtmdl}" var="item" styleClass="table table1" headerClass="headers" rowClasses="oddRows,evenRows" border="1" cellspacing="0" cellpadding="5" frame="box">     
+                            <h:column>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        #{item.libelle}
+                                        <h:outputText   value="[#{item.lstProduit.size()} produit(s)]" rendered="#{item.lstProduit.size() >0 }" /> 
+                                        <h:outputText   value=" Totale : #{item.prix}0 €" class="pull-right" />   
+                                    </div>
+                                    <div class="panel-body"> 
+                                        <div class="col-md-2" >
+                                            <img src='#{item.lstProduit.size() >0 and  item.lstProduit.get(0).imgesUrl!=null  ?  ("../resources/products/thumbnail/".concat(item.lstProduit.get(0).imgesUrl)  ): "../resources/products/imageNotFound.jpg"}' height="150" width="150"/>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                #{item.dateMiseEnVente}
+                                            </div>
+                                            <div class="row">
+                                                #{item.description} 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 center-block" >
+                                            <br />
+                                            <div class="btn-group" role="group">
+                                                <h:commandLink action="#{AdministrationBean.Detail(item.identifiant)}"  class="btn btn-danger btn-secondary"  > <span class="glyphicon glyphicon-eye-open"></span> Voir </h:commandLink> 
+                                                <h:commandLink action="#{AdministrationBean.Valider(item.identifiant)}"  class="btn btn-info btn-secondary "  > <span class="glyphicon glyphicon-saved"></span> Valider </h:commandLink> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </h:column>
+                        </h:dataTable>
+                        <div class="text-center ">
+                            <ul class="pagination">
+
+                                <li class="#{!AdministrationBean.pagination.hasPreviousPage ? 'disabled' : ''}  "><h:commandLink action="#{AdministrationBean.previous}"  class="glyphicon glyphicon-chevron-left" disabled="#{!AdministrationBean.pagination.hasPreviousPage}" /> &#xA0;</li>
+                                <c:forEach begin="1" end="#{AdministrationBean.pagination.itemsCount%annonceBean.pagination.pageSize==0 ? AdministrationBean.pagination.itemsCount/annonceBean.pagination.pageSize : (AdministrationBean.pagination.itemsCount/annonceBean.pagination.pageSize) +1 }"  var="a">
+                                    <li class="#{AdministrationBean.pagination.page==(a-1) ? 'active' : ''} " ><h:commandLink action="#{AdministrationBean.goToPage(a)}" class="glyphicon"  disabled="#{AdministrationBean.pagination.page==(a-1)}" value="#{a}" /> &#xA0;</li>
+                                </c:forEach>
+                                <li class="#{!AdministrationBean.pagination.hasNextPage ? 'disabled' : '' } ">  <h:commandLink action="#{AdministrationBean.next}"  class="glyphicon glyphicon-chevron-right" disabled="#{!AdministrationBean.pagination.hasNextPage}" /> &#xA0;  </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+
+            </h:form>
+
+        </div>
+    </ui:define>
+</ui:composition>        
+

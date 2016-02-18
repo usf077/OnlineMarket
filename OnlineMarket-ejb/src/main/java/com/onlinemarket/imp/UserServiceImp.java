@@ -29,25 +29,28 @@ public class UserServiceImp implements UserServiceInt {
     public userDTO getUserByUserName(String email) {
        List<Compte> c = em.createNamedQuery("Compte.findByMail").setParameter("mail", email).getResultList();
         User u =  c.isEmpty() ? null : c.get(0).getIdUser();
-        return u!=null ? new userDTO(u.getNom(), u.getPrenom(), c.get(0).getMail(), c.get(0).getPwd(), u.getTelephone(), u.getAdresse()) : null;
+        return u!=null ? new userDTO(u.getIdUser(),u.getNom(), u.getPrenom(), c.get(0).getMail(), c.get(0).getPwd(), u.getTelephone(), u.getAdresse(), c.get(0).getIsadmin()) : null;
     
     }
 
     @Override
     public userDTO createUser(userDTO user) {
-    User u = new User();
-    Compte c = new Compte();
-    u.setAdresse(user.getAdresse());
-    u.setNom(user.getNom());
-    u.setPrenom(user.getPrenom());
-    u.setTelephone(user.getTelephone());
-    c.setMail(user.getEmail());
-    c.setPwd(user.getPasssword());
-    c.setIdUser(u);
-    ArrayList<Compte> lst =new ArrayList<>();
-    lst.add(c);
-    u.setCompteCollection(lst);
-    em.persist(u);
+        User u = new User();
+        Compte c = new Compte();
+        u.setAdresse(user.getAdresse());
+        u.setNom(user.getNom());
+        u.setPrenom(user.getPrenom());
+        u.setTelephone(user.getTelephone());
+        c.setMail(user.getEmail());
+        c.setPwd(user.getPasssword());
+        c.setIsadmin(Boolean.FALSE);
+        c.setIdUser(u);
+        ArrayList<Compte> lst =new ArrayList<>();
+        lst.add(c);
+        u.setCompteCollection(lst);
+        em.persist(u);
+        em.flush();
+        user.setIdentifiant(u.getIdUser());
     return user;
     }
     

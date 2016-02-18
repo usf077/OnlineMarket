@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,8 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author ADMINIBM
  */
 @Entity
-@Table(name = "annonce", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_annonce"})})
+@Table(name = "annonce")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Annonce.findAll", query = "SELECT a FROM Annonce a"),
@@ -45,19 +44,19 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Annonce.findByDateValidation", query = "SELECT a FROM Annonce a WHERE a.dateValidation = :dateValidation"),
     @NamedQuery(name = "Annonce.findByNbrProd", query = "SELECT a FROM Annonce a WHERE a.nbrProd = :nbrProd"),
     @NamedQuery(name = "Annonce.findByDateMiseVente", query = "SELECT a FROM Annonce a WHERE a.dateMiseVente = :dateMiseVente"),
-    @NamedQuery(name = "Annonce.findByAttribut8", query = "SELECT a FROM Annonce a WHERE a.attribut8 = :attribut8")})
+    @NamedQuery(name = "Annonce.findByEtatA", query = "SELECT a FROM Annonce a WHERE a.etatA = :etatA")})
 public class Annonce implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_annonce", nullable = false)
+    @Column(name = "id_annonce")
     private Integer idAnnonce;
     @Size(max = 254)
-    @Column(name = "nom_a", length = 254)
+    @Column(name = "nom_a")
     private String nomA;
     @Size(max = 254)
-    @Column(name = "description_a", length = 254)
+    @Column(name = "description_a")
     private String descriptionA;
     @Column(name = "date_creation")
     @Temporal(TemporalType.DATE)
@@ -70,12 +69,13 @@ public class Annonce implements Serializable {
     @Column(name = "date_mise_vente")
     @Temporal(TemporalType.DATE)
     private Date dateMiseVente;
-    @Column(name = "attribut_8")
-    private Integer attribut8;
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
+    @Size(max = 255)
+    @Column(name = "etat_a")
+    private String etatA;
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     @ManyToOne(optional = false)
     private User idUser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnnonce" )
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnnonce" , fetch = FetchType.EAGER)
     private Collection<Produit> produitCollection;
 
     public Annonce() {
@@ -141,12 +141,12 @@ public class Annonce implements Serializable {
         this.dateMiseVente = dateMiseVente;
     }
 
-    public Integer getAttribut8() {
-        return attribut8;
+    public String getEtatA() {
+        return etatA;
     }
 
-    public void setAttribut8(Integer attribut8) {
-        this.attribut8 = attribut8;
+    public void setEtatA(String etatA) {
+        this.etatA = etatA;
     }
 
     public User getIdUser() {

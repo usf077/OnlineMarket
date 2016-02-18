@@ -19,16 +19,28 @@ public class userDTO implements Serializable{
     private String passsword;
     private String telephone;
     private String adresse;
+    private int identifiant;
+    private boolean isAdmin;
 
-    public userDTO(String nom, String prenom, String email, String passsword, String telephone, String adresse) {
+    public userDTO(int identifiant ,String nom, String prenom, String email, String passsword, String telephone, String adresse, boolean isAdmin) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.passsword = passsword;
         this.telephone = telephone;
         this.adresse = adresse;
+        this.identifiant=identifiant;
+        this.isAdmin=isAdmin;
     }
     public userDTO(){
+    }
+
+    public int getIdentifiant() {
+        return identifiant;
+    }
+
+    public void setIdentifiant(int identifiant) {
+        this.identifiant = identifiant;
     }
 
     
@@ -115,5 +127,14 @@ public class userDTO implements Serializable{
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
+
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+    
     
 }

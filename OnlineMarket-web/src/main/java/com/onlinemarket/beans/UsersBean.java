@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.onlinemarket.authentification.beans;
+package com.onlinemarket.beans;
 
 import com.onlinemarket.domain.dtos.userDTO;
 import com.onlinemarket.domain.interfaces.UserServiceInt;
@@ -33,7 +33,7 @@ public class UsersBean {
     private String passwordV;
     private String telephone;
     private String adresse;
-    
+    private boolean isAdmin;
     
     @EJB
     private UserServiceInt userService;
@@ -142,6 +142,14 @@ public class UsersBean {
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
+
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
     
     
       public String validateUser() {   
@@ -179,7 +187,7 @@ public class UsersBean {
                 context.addMessage(null, message);
                 return null;
             }
-            wuser = new userDTO(nom, prenom, email, password, telephone, adresse);
+            wuser = new userDTO(0,nom, prenom, email, password, telephone, adresse ,false);
             try {
               userService.createUser(wuser);
                 return "login";
